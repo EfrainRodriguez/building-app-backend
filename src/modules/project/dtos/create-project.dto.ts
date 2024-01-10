@@ -4,9 +4,26 @@ import {
   MinLength,
   IsDateString,
   IsOptional,
-  IsArray
+  IsArray,
+  IsNumber
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+
+class CreateItemDto {
+  @ApiProperty({
+    description: 'The name of the item',
+    example: 'Item 1'
+  })
+  @IsString()
+  name: string;
+
+  @ApiProperty({
+    description: 'The unit value of the item',
+    example: 10
+  })
+  @IsNumber()
+  unitValue: number;
+}
 
 export class CreateProjectDto {
   @ApiProperty({
@@ -47,11 +64,8 @@ export class CreateProjectDto {
 
   @ApiProperty({
     description: 'Items of the project',
-    example: [{ name: 'Item 1', unitPrice: 100 }]
+    example: [{ name: 'Item 1', unitValue: 100 }]
   })
   @IsArray()
-  items: {
-    name: string;
-    unitPrice: number;
-  }[];
+  items: CreateItemDto[];
 }

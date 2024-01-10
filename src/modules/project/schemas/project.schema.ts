@@ -17,8 +17,8 @@ export class Project extends Document {
   @Prop({ type: [String], default: [] })
   images: string[];
 
-  @Prop({ type: [{ name: String, unitPrice: Number }], default: [] })
-  items: { name: string; unitPrice: number }[];
+  @Prop({ type: [{ name: String, unitValue: Number }], default: [] })
+  items: { name: string; unitValue: number }[];
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);

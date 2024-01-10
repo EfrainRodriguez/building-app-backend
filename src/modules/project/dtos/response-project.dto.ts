@@ -33,11 +33,11 @@ export class ResponseProjectDto {
 
   @ApiProperty({
     description: 'Items of the project',
-    example: [{ name: 'Item 1', unitPrice: 100 }]
+    example: [{ name: 'Item 1', unitValue: 100 }]
   })
   items: {
     name: string;
-    unitPrice: number;
+    unitValue: number;
   }[];
 
   @ApiProperty({
