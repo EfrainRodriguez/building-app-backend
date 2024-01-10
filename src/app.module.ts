@@ -8,11 +8,11 @@ import { ProjectModule } from './modules/project/project.module';
 
 @Module({
   imports: [
+    ProjectModule,
     ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     MongooseModule.forRoot(process.env.MONGO_URI, {
       ignoreUndefined: true
-    }),
-    ProjectModule
+    })
   ],
   controllers: [AppController],
   providers: [AppService]
