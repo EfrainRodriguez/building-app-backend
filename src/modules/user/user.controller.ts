@@ -7,6 +7,7 @@ import {
   Param,
   Query,
   Delete,
+  UseGuards,
   Controller,
   HttpStatus,
   ValidationPipe
@@ -19,6 +20,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { ResponseUserDto } from './dtos/response-user.dto';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('user')
 @ApiTags('user')
@@ -45,6 +47,7 @@ export class UserController {
   }
 
   @Get()
+  @UseGuards(AuthGuard)
   @ApiOperation({ summary: 'Get all users' })
   @ApiOkResponse({ type: ResponseUserDto, isArray: true })
   async getUsers(@Query() query: PaginationDto, @Res() res) {
@@ -70,6 +73,14 @@ export class UserController {
   async deleteUser(@Param('id') id: string, @Res() res) {
     const deletedUser = await this.userService.deleteUser(id);
     return res.status(HttpStatus.OK).json(deletedUser);
+  }
+
+  @Get('email/:email')
+  @ApiOperation({ summary: 'Get a user by email' })
+  @ApiOkResponse({ type: ResponseUserDto })
+  async getUserByEmail(@Param('email') email: string, @Res() res) {
+    const user = await this.userService.getUserByEmail(email);
+    return res.status(HttpStatus.OK).json(user);
   }
 
   sanitizeUser(user: ResponseUserDto) {

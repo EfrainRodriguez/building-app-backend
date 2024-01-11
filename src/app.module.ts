@@ -7,13 +7,15 @@ import { AppService } from './app.service';
 import { ProjectModule } from './modules/project/project.module';
 import { ApplicantModule } from './modules/applicant/applicant.module';
 import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ envFilePath: '.env' }),
     ProjectModule,
     ApplicantModule,
     UserModule,
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+    AuthModule,
     MongooseModule.forRoot(process.env.MONGO_URI, {
       ignoreUndefined: true
     })

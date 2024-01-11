@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as bcryptjs from 'bcryptjs';
 
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
@@ -12,8 +13,22 @@ import { UpdateUserDto } from './dtos/update-user.dto';
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  async createUser(user: CreateUserDto) {
-    const createdUser = new this.userModel(user);
+  async createUser({ email, password, ...rest }: CreateUserDto) {
+    const user = await this.getUserByEmail(email);
+
+    if (user) {
+      throw new BadRequestException('User already exists');
+    }
+
+    const salt = await bcryptjs.genSalt(10);
+
+    const hashedPassword = await bcryptjs.hash(password, salt);
+
+    const createdUser = new this.userModel({
+      email,
+      password: hashedPassword,
+      ...rest
+    });
     return createdUser.save();
   }
 
@@ -44,5 +59,9 @@ export class UserService {
 
   async deleteUser(id: string) {
     return this.userModel.findByIdAndDelete(id);
+  }
+
+  async getUserByEmail(email: string) {
+    return this.userModel.findOne({ email });
   }
 }
