@@ -50,12 +50,13 @@ export class UpdateProjectDto {
 
   @ApiProperty({
     description: 'Items of the project',
-    example: [{ name: 'Item 1', unitValue: 100 }]
+    example: [{ name: 'Item 1', unitValue: 100, proposedValue: 200 }]
   })
   @IsOptional()
   @IsArray()
   items: {
     name: string;
     unitValue: number;
+    proposedValue?: number;
   }[];
 }

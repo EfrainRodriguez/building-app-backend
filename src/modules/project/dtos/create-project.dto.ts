@@ -23,6 +23,14 @@ class CreateItemDto {
   })
   @IsNumber()
   unitValue: number;
+
+  @ApiProperty({
+    description: 'The proposed value of the item',
+    example: 20
+  })
+  @IsOptional()
+  @IsNumber()
+  proposedValue?: number;
 }
 
 export class CreateProjectDto {
@@ -64,7 +72,7 @@ export class CreateProjectDto {
 
   @ApiProperty({
     description: 'Items of the project',
-    example: [{ name: 'Item 1', unitValue: 100 }]
+    example: [{ name: 'Item 1', unitValue: 100, proposedValue: 200 }]
   })
   @IsArray()
   items: CreateItemDto[];
